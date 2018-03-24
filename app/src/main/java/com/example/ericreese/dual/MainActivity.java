@@ -17,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mReference;
     public static boolean loggedIn = false;
     public static String username;
+    public static boolean newUser = false;
+    public static String image;
+    public static String name;
+    public static String bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

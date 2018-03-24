@@ -68,6 +68,8 @@ public class SignUpActivity extends AppCompatActivity {
      */
     private void signUp() {
 
+        MainActivity.newUser = true;
+
         // Reset errors.
         emailView.setError(null);
         passwordView.setError(null);
@@ -130,8 +132,9 @@ public class SignUpActivity extends AppCompatActivity {
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Email").setValue(email);
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Description").setValue(description);
                         MainActivity.username = username;
+                        MainActivity.name = name;
+                        MainActivity.bio = description;
 
-                        //Account created and signing in
                         Context context = emailView.getContext();
                         Intent goToEditProfileScreen = new Intent(context, EditProfileActivity.class);
                         MainActivity.loggedIn = true;

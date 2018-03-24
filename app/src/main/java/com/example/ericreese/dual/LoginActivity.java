@@ -96,8 +96,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (dataSnapshot.hasChild(username)) {
                         if (password.equals(dataSnapshot.child(username).child("Profile").child("Password").getValue())) {
-                            //Signing in
+
+                            MainActivity.image = dataSnapshot.child(username).child("Profile").child("Image").getValue().toString();
+
+                            //Update Values
                             MainActivity.username = username;
+                            MainActivity.bio = dataSnapshot.child(username).child("Profile").child("Description").getValue().toString();
+                            MainActivity.name = dataSnapshot.child(username).child("Profile").child("Name").getValue().toString();
+
+                            //Signing in
                             Context context = usernameView.getContext();
                             Intent goToHomeScreen = new Intent(context, HomeActivity.class);
                             MainActivity.loggedIn = true;

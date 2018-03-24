@@ -1,7 +1,10 @@
 package com.example.ericreese.dual;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +14,25 @@ import android.net.Uri;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+import android.app.ProgressDialog;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.data.DataFetcher;
+import com.bumptech.glide.load.model.stream.StreamModelLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StreamDownloadTask;
+import com.google.firebase.storage.UploadTask;
 
 /**
  * Created by ericreese on 3/24/18.
@@ -25,13 +47,28 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button back;
     private Button confirm;
     private Uri uri;
+    private StorageReference storageReference;
+    private FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         this.profileImage = (ImageView) findViewById(R.id.profileImage);
+
+        //TODO: Test this code!
+        if (MainActivity.newUser == false) {
+            StorageReference ref = storageReference.child("images/" + MainActivity.image);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(ref)
+                    .into(profileImage);
+        }
+
         this.editProfile = (Button) findViewById(R.id.edit_profile_picture);
         this.editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,13 +81,29 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         this.name = (EditText) findViewById(R.id.name);
+        this.name.setText(MainActivity.name);
         this.bio = (EditText) findViewById(R.id.bio);
+        this.bio.setText(MainActivity.bio);
         this.back = (Button) findViewById(R.id.back);
         this.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Go to previous screen
-                //TODO: Implement at end of project
+                if (MainActivity.newUser == false) {
+                    Context context = view.getContext();
+                    Intent goToHomeScreen = new Intent(context, HomeActivity.class);
+                    MainActivity.loggedIn = true;
+                    startActivity(goToHomeScreen);
+                    finish();
+                } else {
+                    //MainActivity.mReference.child("users").child(MainActivity.username).removeValue();
+                    //Remove value from database when possible
+                    Context context = view.getContext();
+                    Intent goToSignUpActivityScreen = new Intent(context, SignUpActivity.class);
+                    MainActivity.loggedIn = true;
+                    startActivity(goToSignUpActivityScreen);
+                    finish();
+                }
             }
         });
 
@@ -59,6 +112,13 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Update values to firebase
+                MainActivity.newUser = false;
+                uploadImage();
+                Context context = view.getContext();
+                Intent goToHomeScreen = new Intent(context, HomeActivity.class);
+                MainActivity.loggedIn = true;
+                startActivity(goToHomeScreen);
+                finish();
             }
         });
     }
@@ -77,6 +137,95 @@ public class EditProfileActivity extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void uploadImage() {
+
+        if(uri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            final String id = UUID.randomUUID().toString();
+            StorageReference ref = storageReference.child("images/"+ id);
+            ref.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            MainActivity.mReference.child("users").child(MainActivity.username).child("Profile").child("Image").setValue(id);
+                            progressDialog.dismiss();
+                            Toast.makeText(EditProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditProfileActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
+}
+
+class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
+
+    private static final String TAG = "FirebaseImageLoader";
+
+    @Override
+    public  DataFetcher<InputStream> getResourceFetcher(StorageReference model, int width, int height) {
+        return new FirebaseStorageFetcher(model);
+    }
+
+    private class FirebaseStorageFetcher implements DataFetcher<InputStream> {
+
+        private StorageReference mRef;
+        private StreamDownloadTask mStreamTask;
+        private InputStream mInputStream;
+
+        FirebaseStorageFetcher(StorageReference ref) {
+            mRef = ref;
+        }
+
+        @Override
+        public  InputStream loadData(Priority priority) throws Exception {
+            mStreamTask = mRef.getStream();
+            mInputStream = Tasks.await(mStreamTask).getStream();
+
+            return mInputStream;
+        }
+
+        @Override
+        public  void cleanup() {
+            // Close stream if possible
+            if (mInputStream != null) {
+                try {
+                    mInputStream.close();
+                    mInputStream = null;
+                } catch (IOException e) {
+                    Log.w(TAG, "Could not close stream", e);
+                }
+            }
+        }
+
+        @Override
+        public  String getId() {
+            return mRef.getPath();
+        }
+
+        @Override
+        public  void cancel() {
+            // Cancel task if possible
+            if (mStreamTask != null && mStreamTask.isInProgress()) {
+                mStreamTask.cancel();
             }
         }
     }
