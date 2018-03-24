@@ -118,9 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
 
                         //Account created and signing in
                         Context context = emailView.getContext();
-                        Intent goToMainScreen = new Intent(context, MainActivity.class);
+                        Intent goToEditProfileScreen = new Intent(context, EditProfileActivity.class);
                         MainActivity.loggedIn = true;
-                        startActivity(goToMainScreen);
+                        startActivity(goToEditProfileScreen);
                         finish();
                     } else {
                         focusView[0].requestFocus();

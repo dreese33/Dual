@@ -99,9 +99,9 @@ public class LoginActivity extends AppCompatActivity {
                             //Signing in
                             Log.d("login", "login successful");
                             Context context = usernameView.getContext();
-                            Intent goToMainScreen = new Intent(context, MainActivity.class);
+                            Intent goToHomeScreen = new Intent(context, HomeActivity.class);
                             MainActivity.loggedIn = true;
-                            startActivity(goToMainScreen);
+                            startActivity(goToHomeScreen);
                             finish();
                         } else {
                             passwordView.setError("Password incorrect");
