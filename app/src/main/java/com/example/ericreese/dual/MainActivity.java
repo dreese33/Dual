@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Button signUpButton1;
     public static DatabaseReference mReference;
     public static boolean loggedIn = false;
+    public static String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

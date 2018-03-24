@@ -40,8 +40,15 @@
             android:text="confirm" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/edit_profile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile Picture"
+        app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
     <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        app:layout_constraintTop_toBottomOf="@id/edit_profile_picture"
         android:gravity="center_horizontal"
         android:id="@+id/layout"
         android:layout_width="match_parent"

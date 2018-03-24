@@ -14,6 +14,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by ericreese on 3/24/18.
  */
@@ -96,6 +98,18 @@ public class SignUpActivity extends AppCompatActivity {
             usernameView.setError("Username is invalid");
             focusView[0] = usernameView;
             cancel = true;
+        } else if (TextUtils.isEmpty(password)) {
+            passwordView.setError("Field required");
+            focusView[0] = passwordView;
+            cancel = true;
+        } else if (TextUtils.isEmpty(description)) {
+            descriptionView.setError("Field required");
+            focusView[0] = descriptionView;
+            cancel = true;
+        } else if (TextUtils.isEmpty(name)) {
+            nameView.setError("Field required");
+            focusView[0] = nameView;
+            cancel = true;
         }
 
         if (cancel) {
@@ -115,6 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Name").setValue(name);
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Email").setValue(email);
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Description").setValue(description);
+                        MainActivity.username = username;
 
                         //Account created and signing in
                         Context context = emailView.getContext();
