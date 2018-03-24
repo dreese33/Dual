@@ -97,7 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                     if (dataSnapshot.hasChild(username)) {
                         if (password.equals(dataSnapshot.child(username).child("Profile").child("Password").getValue())) {
 
-                            MainActivity.image = dataSnapshot.child(username).child("Profile").child("Image").getValue().toString();
+                            Object image = dataSnapshot.child(username).child("Profile").child("Image").getValue();
+                            if (image != null) {
+                                MainActivity.image = image.toString();
+                            }
 
                             //Update Values
                             MainActivity.username = username;

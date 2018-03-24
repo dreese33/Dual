@@ -10,7 +10,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.FirebaseDatabase;
+import com.example.ericreese.dual.MainActivity;
 import com.google.firebase.database.ValueEventListener;
 import com.example.ericreese.dual.R;
 
@@ -45,11 +46,13 @@ public class MatchesActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
     private void getUserMatchId() {
-
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(cusrrentUserID).child("connections").child("matches");
+        DatabaseReference matchDb = MainActivity.mReference.child("Users").child(cusrrentUserID).child("connections").child("matches");
+        //DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(cusrrentUserID).child("connections").child("matches");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,7 +71,8 @@ public class MatchesActivity extends AppCompatActivity {
     }
 
     private void FetchMatchInformation(String key) {
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+        DatabaseReference userDb = MainActivity.mReference.child("Users").child(key);
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

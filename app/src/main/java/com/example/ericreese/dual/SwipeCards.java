@@ -2,7 +2,9 @@ package com.example.ericreese.dual;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -22,7 +24,10 @@ public class SwipeCards extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.swipe_main);
-
+        getSupportActionBar().show();
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         al = new ArrayList<>();
         al.add("php");
@@ -34,7 +39,7 @@ public class SwipeCards extends AppCompatActivity {
         al.add("css");
         al.add("javascript");
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.name, al );
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item_card, R.id.name, al );
 
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);

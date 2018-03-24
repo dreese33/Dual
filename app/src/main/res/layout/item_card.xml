@@ -40,7 +40,8 @@
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="@android:color/black"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                tools:text="Name" />
 
             <TextView
                 android:id="@+id/bio"
