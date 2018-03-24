@@ -30,10 +30,10 @@
                 android:id="@+id/sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email/Username"
+                android:hint="Username"
                 android:imeActionId="6"
                 android:imeActionLabel="Enter User Name"
-                android:imeOptions="actionUnspecified"
+                android:imeOptions="actionDone"
                 android:maxLines="1"
                 android:singleLine="true" />
 
@@ -44,7 +44,7 @@
                 android:hint="Password"
                 android:imeActionId="6"
                 android:imeActionLabel="Enter Password"
-                android:imeOptions="actionUnspecified"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
