@@ -96,8 +96,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent signout = new Intent(context, LoginActivity.class);
                 MainActivity.loggedIn = false;
+                Intent signout = new Intent(context, MainActivity.class);
                 startActivity(signout);
                 finish();
 
