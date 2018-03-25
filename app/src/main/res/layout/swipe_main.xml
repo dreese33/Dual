@@ -5,13 +5,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.example.ericreese.dual.SwipeCardsActivity"
+    tools:context="com.example.ericreese.dual.SwipeCardsActivity"
 android:orientation="vertical">
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="465dp"
+        android:layout_height="516dp"
         android:background="@android:color/white"
         app:rotation_degrees="15.5"
         tools:context=".SwipeCardsActivity"
@@ -21,12 +21,15 @@ android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="39dp"
+
+        android:baselineAligned="true"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/back"
             android:layout_width="128dp"
             android:layout_height="match_parent"
+            android:baselineAligned="true"
             android:layout_weight="1"
             android:text="Back" />
 
@@ -34,6 +37,7 @@ android:orientation="vertical">
             android:id="@+id/sign_out"
             android:layout_width="99dp"
             android:layout_height="match_parent"
+            android:baselineAligned="true"
             android:layout_weight="1"
             android:text="Sign Out" />
     </LinearLayout>

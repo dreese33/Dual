@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.example.ericreese.dual.Cardss.*;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String currentUId;
     private DatabaseReference usersDb;
+    private DatabaseReference globalusersDb;
     ListView listView;
     List<Cards> rowItems;
     private ArrayList<String> listOfUsers = new ArrayList<String>();
@@ -83,6 +85,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
         *
         * **/
         usersDb = MainActivity.mReference.child("categories").child(MainActivity.currentCategory);
+
         rowItems = new ArrayList<Cards>();
 
         arrayAdapterr = new ArrayAdapterr(this, R.layout.item_card, rowItems);
@@ -95,28 +98,29 @@ public class SwipeCardsActivity extends AppCompatActivity {
             @Override
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
-                Log.d("LIST", "removed object!");
                 rowItems.remove(0);
                 arrayAdapterr.notifyDataSetChanged();
             }
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
-                //makeToast(SwipeCardsActivity.this, "Left!");
-
-                //Add to username swiped no on 0
-
+                /*
+                Cards obj = (Cards) dataObject;
+                String cardId = obj.getUserId();
+                String userId = MainActivity.username;
+                MainActivity.mReference.child("users").child(userId).child("Profile").child("No").child(cardId).setValue(true);
+                */
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                //makeToast(SwipeCardsActivity.this, "Right!");
-
-                //Add to username swiped yes on 1
-                //MainActivity.mReference.child("categories").child(MainActivity.currentCategory).child("users").child(MainActivity.username).child("Swipevalues").child(/* other user).setValue("1");
+                /*
+                Cards obj = (Cards) dataObject;
+                String cardId = obj.getUserId();
+                String userId = MainActivity.username;
+                MainActivity.mReference.child("users").child(userId).child("Profile").child("Yes").child(cardId).setValue(true);
+                isConnectionMatch(cardId);
+                */
             }
 
             @Override
@@ -177,7 +181,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
                     } else {
                         displayname = "";
                     }
-                    Cards item = new Cards(dataSnapshot.getKey(), displayname, profileImageUrl);
+                    Cards item = new Cards(dataSnapshot.getKey(), displayname, profileImageUrl, biography);
                     rowItems.add(item);
                     arrayAdapterr.notifyDataSetChanged();
                 }
@@ -205,19 +209,28 @@ public class SwipeCardsActivity extends AppCompatActivity {
 
     }
 
-//    @OnClick(R.id.right)
-//    public void right() {
-//        /**
-//         * Trigger the right event manually.
-//         */
-//        flingContainer.getTopCardListener().selectRight();
-//    }
-//
-//    @OnClick(R.id.left)
-//    public void left() {
-//        flingContainer.getTopCardListener().selectLeft();
-//    }
-//
-//
+    private void isConnectionMatch(String cardId) {
+        final String userId = MainActivity.username;
+        DatabaseReference currentUserConnectionsDb = MainActivity.mReference.child("users").child(userId).child("Profile").child("Yes").child(cardId);
+        currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    Log.d("TAG", "IT EXISTSSSSSSSSSS");
+                    String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
+                    MainActivity.mReference.child("users").child(dataSnapshot.getKey()).child("Profile").child("Connections").child(userId).child("ChatId").setValue(key);
+                    MainActivity.mReference.child("users").child(userId).child("Profile").child("Connections").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+
+
 
 }

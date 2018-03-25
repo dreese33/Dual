@@ -1,12 +1,18 @@
 package com.example.ericreese.dual.Matches;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.example.ericreese.dual.HomeActivity;
+import com.example.ericreese.dual.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +29,8 @@ public class MatchesActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mMatchesAdapter;
     private RecyclerView.LayoutManager mMatchesLayoutManager;
-
+    private Button back;
+    private Button signout;
     //private String cusrrentUserID;
 
     @Override
@@ -42,6 +49,43 @@ public class MatchesActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mMatchesAdapter);
 
         getUserMatchId();
+
+        this.back = (Button) this.findViewById(R.id.back);
+        this.signout = (Button) this.findViewById(R.id.sign_out);
+        this.back = (Button) findViewById(R.id.back);
+        this.back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Go to previous screen
+                if (MainActivity.newUser == false) {
+                    Context context = view.getContext();
+                    Intent goToHomeScreen = new Intent(context, HomeActivity.class);
+                    MainActivity.loggedIn = true;
+                    startActivity(goToHomeScreen);
+                    finish();
+                } else {
+                    //MainActivity.mReference.child("users").child(MainActivity.username).removeValue();
+                    //Remove value from database when possible
+                    Context context = view.getContext();
+                    Intent goToSignUpActivityScreen = new Intent(context, SignUpActivity.class);
+                    MainActivity.loggedIn = true;
+                    startActivity(goToSignUpActivityScreen);
+                    finish();
+                }
+            }
+        });
+
+        this.signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent signout = new Intent(context, MainActivity.class);
+                MainActivity.loggedIn = false;
+                startActivity(signout);
+                finish();
+
+            }
+        });
     }
 
     private void getUserMatchId() {
