@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.ericreese.dual.Matches.MatchesActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         MainActivity.mReference.addChildEventListener(new ChildEventListener() {
 
             String value = "";
+            boolean begin = false;
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -75,7 +77,12 @@ public class HomeActivity extends AppCompatActivity {
                     } else if (MainActivity.keys.contains(child.getKey())) {
                         continue;
                     }
-                    MainActivity.keys.add(child.getKey());
+
+                    if (begin) {
+                        MainActivity.keys.add(child.getKey());
+                    } else if (child.getValue().equals("Begin")) {
+                        begin = true;
+                    }
                 }
             }
 
@@ -89,18 +96,18 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-        /*
+
         //Matches
         this.currentmatches.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent gotomatches = new Intent(context, EditProfileActivity.class);
+                Intent gotomatches = new Intent(context, MatchesActivity.class);
                 startActivity(gotomatches);
                 finish();
             }
         });
-        */
+
         /*
         this.support.setOnClickListener(new View.OnClickListener() {
             @Override

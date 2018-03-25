@@ -31,6 +31,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
     private DatabaseReference usersDb;
     ListView listView;
     List<Cards> rowItems;
+    private ArrayList<String> listOfUsers = new ArrayList<String>();
 
 
     private Button back;
@@ -81,13 +82,12 @@ public class SwipeCardsActivity extends AppCompatActivity {
         * Populate the cards
         *
         * **/
-        usersDb = MainActivity.mReference.child("users");
+        usersDb = MainActivity.mReference.child("categories").child(MainActivity.currentCategory);
         rowItems = new ArrayList<Cards>();
 
         arrayAdapterr = new ArrayAdapterr(this, R.layout.item_card, rowItems);
 
         populateUsers();
-
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapterr);
@@ -116,7 +116,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
                 //makeToast(SwipeCardsActivity.this, "Right!");
 
                 //Add to username swiped yes on 1
-
+                //MainActivity.mReference.child("categories").child(MainActivity.currentCategory).child("users").child(MainActivity.username).child("Swipevalues").child(/* other user).setValue("1");
             }
 
             @Override
@@ -159,6 +159,8 @@ public class SwipeCardsActivity extends AppCompatActivity {
                     Object imageurl = username.child("Image").getValue();
                     Object bio = username.child("Description").getValue();
                     Object name = username.child("Name").getValue();
+
+                    Log.d("TAG", username.getKey());
 
                     if (imageurl != null) {
                         profileImageUrl = imageurl.toString();

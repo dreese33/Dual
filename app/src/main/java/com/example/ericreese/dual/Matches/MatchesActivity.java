@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,14 +24,14 @@ public class MatchesActivity extends AppCompatActivity {
     private RecyclerView.Adapter mMatchesAdapter;
     private RecyclerView.LayoutManager mMatchesLayoutManager;
 
-    private String cusrrentUserID;
+    //private String cusrrentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
 
-        cusrrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //cusrrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -41,22 +42,17 @@ public class MatchesActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mMatchesAdapter);
 
         getUserMatchId();
-
-
-
-
-
-
-
     }
 
     private void getUserMatchId() {
-        DatabaseReference matchDb = MainActivity.mReference.child("Users").child(cusrrentUserID).child("connections").child("matches");
+        //DatabaseReference matchDb = MainActivity.mReference.child("users").child(MainActivity.username).child("connections").child("matches");
+        DatabaseReference matchDb = MainActivity.mReference.child("categories").child(MainActivity.currentCategory).child("users").child(MainActivity.username).child("Matches");
         //DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(cusrrentUserID).child("connections").child("matches");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
+                    Log.d(dataSnapshot.toString(), "Exists");
                     for(DataSnapshot match : dataSnapshot.getChildren()){
                         FetchMatchInformation(match.getKey());
                     }
@@ -64,29 +60,31 @@ public class MatchesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 
     private void FetchMatchInformation(String key) {
-        DatabaseReference userDb = MainActivity.mReference.child("Users").child(key);
+        DatabaseReference userDb = MainActivity.mReference;
+        final String newKey = key;
 //        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String userId = dataSnapshot.getKey();
+                    String userId = newKey;
                     String name = "";
                     String profileImageUrl = "";
-                    if(dataSnapshot.child("name").getValue()!=null){
-                        name = dataSnapshot.child("name").getValue().toString();
+                    //if(dataSnapshot.child("name").getValue()!=null){
+                    Object child1 = dataSnapshot.child("users").child(newKey).child("Profile").child("Name").getValue();
+                    if (child1 != null) {
+                        name = child1.toString();
                     }
-                    if(dataSnapshot.child("profileImageUrl").getValue()!=null){
-                        profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
+                    Object child2 = dataSnapshot.child("categories").child(MainActivity.currentCategory).child("users").child(newKey).child("Image").getValue();
+                    if(child2 != null){
+                        profileImageUrl = child2.toString();
+                        Log.d("TAG", profileImageUrl);
                     }
-
 
                     MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
                     resultsMatches.add(obj);
@@ -96,7 +94,6 @@ public class MatchesActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 

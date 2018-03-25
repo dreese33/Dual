@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mReference;
     public static boolean loggedIn = false;
     public static String username;
+    public static String currentName;
     public static boolean newUser = false;
     public static String image;
     public static String name;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        currentCategory = "All";
 
         mReference = FirebaseDatabase.getInstance().getReference();
         this.loginButton1 = (Button) this.findViewById(R.id.loginButton);
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.mReference.addChildEventListener(new ChildEventListener() {
 
             String value = "";
+            boolean begin = false;
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -72,7 +76,12 @@ public class MainActivity extends AppCompatActivity {
                     } else if (keys.contains(child.getKey())) {
                         continue;
                     }
-                    keys.add(child.getKey());
+
+                    if (begin) {
+                        keys.add(child.getKey());
+                    } else if (child.getValue().equals("Begin")) {
+                        begin = true;
+                    }
                 }
             }
 

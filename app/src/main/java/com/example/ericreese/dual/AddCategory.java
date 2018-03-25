@@ -161,6 +161,7 @@ public class AddCategory extends AppCompatActivity {
 
         //TODO: Add description to selected category
         MainActivity.mReference.child("categories").child(nameString).child("users").child(MainActivity.username).child("Description").setValue(bioString);
+        MainActivity.mReference.child("categories").child(nameString).child("users").child(MainActivity.username).child("Name").setValue(MainActivity.name);
     }
 
     /**
