@@ -5,7 +5,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.example.ericreese.dual.SwipeCards"
+tools:context="com.example.ericreese.dual.SwipeCardsActivity"
 android:orientation="vertical">
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
@@ -14,7 +14,7 @@ android:orientation="vertical">
         android:layout_height="465dp"
         android:background="@android:color/white"
         app:rotation_degrees="15.5"
-        tools:context=".SwipeCards"
+        tools:context=".SwipeCardsActivity"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
 
@@ -24,12 +24,14 @@ android:orientation="vertical">
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/back"
             android:layout_width="128dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Back" />
 
         <Button
+            android:id="@+id/sign_out"
             android:layout_width="99dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

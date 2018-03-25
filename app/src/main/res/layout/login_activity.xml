@@ -7,6 +7,13 @@
     tools:context="com.example.ericreese.dual.LoginActivity">
 
     <!-- Login progress -->
+    <TextView
+        android:id="@+id/loginTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        tools:text="Dual Login" />
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"

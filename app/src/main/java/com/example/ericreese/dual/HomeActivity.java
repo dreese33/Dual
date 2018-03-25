@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,22 +22,85 @@ import com.google.firebase.database.DatabaseError;
  */
 
 public class HomeActivity extends AppCompatActivity {
-    private Button signIn;
+    private Button swipe;
+    private Button profile;
+    private Button currentmatches;
+    private Button add_category;
+    private Button support;
+    private Button signout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        this.signIn = (Button) this.findViewById(R.id.profile);
+        this.swipe = (Button) this.findViewById(R.id.swipe);
+        this.profile = (Button) this.findViewById(R.id.profile);
+        this.currentmatches = (Button) this.findViewById(R.id.current_matches);
+        this.add_category =  (Button) this.findViewById(R.id.add_category);
+        this.signout = (Button) this.findViewById(R.id.sign_out);
 
-        this.signIn.setOnClickListener(new View.OnClickListener() {
+        this.swipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent gotoswipe = new Intent(context, SwipeCardsActivity.class);
+                startActivity(gotoswipe);
+                finish();
+            }
+        });
+
+        this.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent goToEditProfile = new Intent(context, EditProfileActivity.class);
                 startActivity(goToEditProfile );
                 finish();
+            }
+        });
+        /*
+        //Matches
+        this.currentmatches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent gotomatches = new Intent(context, EditProfileActivity.class);
+                startActivity(gotomatches);
+                finish();
+            }
+        });
+        */
+        /*
+        this.support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent getsupport = new Intent(context, EditProfileActivity.class);
+                startActivity(getsupport);
+                finish();
+            }
+        });
+        */
+        this.add_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Context context = v.getContext();
+                Intent goToEditProfile = new Intent(context, EditProfileActivity.class);
+                startActivity(goToEditProfile );
+                finish();
+            }
+        });
+        this.signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = v.getContext();
+                Intent signout = new Intent(context, LoginActivity.class);
+                MainActivity.loggedIn = false;
+                startActivity(signout);
+                finish();
+
             }
         });
 

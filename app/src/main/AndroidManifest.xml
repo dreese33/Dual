@@ -22,7 +22,7 @@
         <activity android:name=".Chat.ChatActivity"></activity>
         <activity android:name=".Matches.MatchesActivity"></activity>
         <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".SwipeCards"></activity>
+        <activity android:name=".SwipeCardsActivity"></activity>
         <activity android:name=".EditProfileActivity"></activity>
         <activity android:name=".HomeActivity"></activity>
 
