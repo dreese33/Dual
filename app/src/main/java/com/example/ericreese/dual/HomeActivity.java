@@ -40,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         this.category = (EditText) findViewById(R.id.category);
+        category.setText("Category: " + MainActivity.currentCategory);
         this.swipe = (Button) this.findViewById(R.id.swipe);
         this.profile = (Button) this.findViewById(R.id.profile);
         this.currentmatches = (Button) this.findViewById(R.id.current_matches);
