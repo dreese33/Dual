@@ -132,12 +132,12 @@ public class HomeActivity extends AppCompatActivity {
         this.signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.loggedIn = false;
                 Context context = v.getContext();
                 MainActivity.loggedIn = false;
                 Intent signout = new Intent(context, MainActivity.class);
                 startActivity(signout);
                 finish();
-
             }
         });
 

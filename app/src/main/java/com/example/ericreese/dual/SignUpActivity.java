@@ -131,6 +131,8 @@ public class SignUpActivity extends AppCompatActivity {
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Name").setValue(name);
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Email").setValue(email);
                         MainActivity.mReference.child("users").child(username).child("Profile").child("Description").setValue(description);
+                        MainActivity.mReference.child("categories").child("All").child("users").child(username).child("Description").setValue(description);
+                        MainActivity.mReference.child("categories").child("All").child("users").child(username).child("Name").setValue(name);
                         MainActivity.username = username;
                         MainActivity.name = name;
                         MainActivity.bio = description;
