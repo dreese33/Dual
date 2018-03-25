@@ -17,8 +17,6 @@ import android.widget.EditText;
  */
 
 public class HomeActivity extends AppCompatActivity {
-    static int count = 1;
-
     private Button signIn;
 
     @Override
@@ -55,8 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         for (int i = 0; i<2; i++) {
-            menu.add(0, menu.size(), Menu.NONE, R.string.hello_world).setIcon(R.drawable.ic_emoticon);
-            count++;
+            menu.add(0, menu.size(), Menu.NONE, R.string.hello_world);
         }
         return super.onPrepareOptionsMenu(menu);
     }

@@ -61,7 +61,7 @@ public class EditProfileActivity extends AppCompatActivity {
         this.profileImage = (ImageView) findViewById(R.id.profileImage);
 
         //TODO: Test this code!
-        if (MainActivity.newUser == false) {
+        if (MainActivity.newUser == false && MainActivity.image != null) {
             StorageReference ref = storageReference.child("images/" + MainActivity.image);
             Glide.with(this)
                     .using(new FirebaseImageLoader())
@@ -114,6 +114,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 //Update values to firebase
                 MainActivity.newUser = false;
                 uploadImage();
+                updateData();
                 Context context = view.getContext();
                 Intent goToHomeScreen = new Intent(context, HomeActivity.class);
                 MainActivity.loggedIn = true;
@@ -141,6 +142,29 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updates data on firebase with new data
+     */
+    private void updateData() {
+        Object bioObject = bio.getText();
+        String bioString = "";
+        if (bioObject != null) {
+            bioString = bioObject.toString();
+        }
+
+        Object nameObject = name.getText();
+        String nameString = "";
+        if (nameObject != null) {
+            nameString = nameObject.toString();
+        }
+
+        MainActivity.mReference.child("users").child(MainActivity.username).child("Profile").child("Name").setValue(nameString);
+        MainActivity.mReference.child("users").child(MainActivity.username).child("Profile").child("Description").setValue(bioString);
+    }
+
+    /**
+     * Uploads image to firebase
+     */
     private void uploadImage() {
 
         if(uri != null) {
@@ -155,7 +179,6 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             MainActivity.mReference.child("users").child(MainActivity.username).child("Profile").child("Image").setValue(id);
-                            progressDialog.dismiss();
                             Toast.makeText(EditProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
