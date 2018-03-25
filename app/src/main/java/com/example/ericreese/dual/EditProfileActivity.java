@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import android.app.ProgressDialog;
@@ -28,6 +29,9 @@ import com.bumptech.glide.load.model.stream.StreamModelLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -49,6 +53,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Uri uri;
     private StorageReference storageReference;
     private FirebaseStorage storage;
+    private ArrayList<String> users = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +126,37 @@ public class EditProfileActivity extends AppCompatActivity {
                 startActivity(goToHomeScreen);
                 finish();
             }
+        });
+
+        MainActivity.mReference.addChildEventListener(new ChildEventListener() {
+
+            String value = "";
+            boolean begin = false;
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (users.contains(child.getKey())) {
+                        continue;
+                    }
+
+                    if (begin) {
+                        users.add(child.getKey());
+                    } else if (child.getValue().equals("Terminate")) {
+                        begin = true;
+                    }
+                }
+            }
+
+            //Necessary methods to implement interface
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 
