@@ -87,8 +87,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Context context = v.getContext();
-                Intent goToEditProfile = new Intent(context, EditProfileActivity.class);
-                startActivity(goToEditProfile );
+                Intent goToAddCategory = new Intent(context, AddCategory.class);
+                startActivity(goToAddCategory);
                 finish();
             }
         });
