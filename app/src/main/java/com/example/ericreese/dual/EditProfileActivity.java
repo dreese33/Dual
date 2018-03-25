@@ -214,6 +214,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            MainActivity.image = id;
                             MainActivity.mReference.child("users").child(MainActivity.username).child("Profile").child("Image").setValue(id);
                             MainActivity.mReference.child("categories").child("All").child("users").child(MainActivity.username).child("Image").setValue(id);
                             Toast.makeText(EditProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
