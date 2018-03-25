@@ -51,7 +51,6 @@ public class HomeActivity extends AppCompatActivity {
         this.swipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Tag", "R");
                 Context context = v.getContext();
                 Intent gotoswipe = new Intent(context, SwipeCardsActivity.class);
                 startActivity(gotoswipe);
