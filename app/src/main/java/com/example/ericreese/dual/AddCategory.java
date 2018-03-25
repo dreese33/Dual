@@ -109,6 +109,10 @@ public class AddCategory extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Update values to firebase
+                Object category = name.getText();
+                if (category != null) {
+                    MainActivity.currentCategory = category.toString();
+                }
                 MainActivity.newUser = false;
                 uploadImage();
                 updateData();

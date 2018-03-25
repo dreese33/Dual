@@ -106,11 +106,17 @@ public class SwipeCardsActivity extends AppCompatActivity {
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
                 //makeToast(SwipeCardsActivity.this, "Left!");
+
+                //Add to username swiped no on 0
+
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
                 //makeToast(SwipeCardsActivity.this, "Right!");
+
+                //Add to username swiped yes on 1
+
             }
 
             @Override

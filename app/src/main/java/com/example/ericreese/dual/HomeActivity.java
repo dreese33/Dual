@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,12 +29,14 @@ public class HomeActivity extends AppCompatActivity {
     private Button add_category;
     private Button support;
     private Button signout;
+    private EditText category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        this.category = (EditText) findViewById(R.id.category);
         this.swipe = (Button) this.findViewById(R.id.swipe);
         this.profile = (Button) this.findViewById(R.id.profile);
         this.currentmatches = (Button) this.findViewById(R.id.current_matches);
@@ -157,6 +160,8 @@ public class HomeActivity extends AppCompatActivity {
     //decides what to do when you press a category
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        MainActivity.currentCategory = item.toString();
+        category.setText("Category: " + MainActivity.currentCategory);
         return true;
     }
 }
