@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
 
 /**
  * Created by ericreese on 3/24/18.
@@ -52,8 +58,9 @@ public class HomeActivity extends AppCompatActivity {
     //fetches different subreddits
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        for (int i = 0; i<2; i++) {
-            menu.add(0, menu.size(), Menu.NONE, R.string.hello_world);
+        menu.clear();
+        for (int i = 0; i < MainActivity.keys.size(); i++) {
+            menu.add(0, menu.size(), Menu.NONE, MainActivity.keys.get(i));
         }
         return super.onPrepareOptionsMenu(menu);
     }
