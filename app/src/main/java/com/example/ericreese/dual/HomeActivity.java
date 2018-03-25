@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.ericreese.dual.*;
+import com.example.ericreese.dual.Chat.ChatActivity;
 import com.example.ericreese.dual.Matches.MatchesActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         this.profile = (Button) this.findViewById(R.id.profile);
         this.currentmatches = (Button) this.findViewById(R.id.current_matches);
         this.add_category =  (Button) this.findViewById(R.id.add_category);
+        this.support = (Button) this.findViewById(R.id.support);
         this.signout = (Button) this.findViewById(R.id.sign_out);
 
         this.swipe.setOnClickListener(new View.OnClickListener() {
@@ -108,17 +111,18 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        /*
+
         this.support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent getsupport = new Intent(context, EditProfileActivity.class);
+                Intent getsupport = new Intent(context, ChatActivity.class);
                 startActivity(getsupport);
                 finish();
             }
         });
-        */
+
+
         this.add_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
