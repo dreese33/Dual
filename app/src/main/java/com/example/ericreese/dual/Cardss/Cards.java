@@ -9,11 +9,13 @@ public class Cards {
     private String userId;
     private String name;
     private String profileImageUrl;
+    private String bio;
 
-    public Cards(String userId, String name, String profileImageUrl){
+    public Cards(String userId, String name, String profileImageUrl, String biography){
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+        this.bio = biography;
     }
 
     public String getUserId(){
@@ -29,6 +31,9 @@ public class Cards {
     public void setName(String name){
         this.name = name;
     }
+
+    public String getBio() { return bio;}
+    public void setBio(String biography) {this.bio = biography;}
 
     public String getProfileImageUrl(){
         return profileImageUrl;

@@ -177,7 +177,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
                     } else {
                         displayname = "";
                     }
-                    Cards item = new Cards(dataSnapshot.getKey(), displayname, profileImageUrl);
+                    Cards item = new Cards(dataSnapshot.getKey(), displayname, profileImageUrl, biography);
                     rowItems.add(item);
                     arrayAdapterr.notifyDataSetChanged();
                 }

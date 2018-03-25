@@ -42,12 +42,15 @@ public class ArrayAdapterr extends ArrayAdapter<Cards> {
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.name);
+        TextView bio = (TextView) convertView.findViewById(R.id.bio);
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("images/" + card_item.getProfileImageUrl());
 
         name.setText(card_item.getName());
+        bio.setText(card_item.getBio());
+
         Glide.clear(image);
         if (card_item.getProfileImageUrl() == null) {
             android.util.Log.d("TAG",card_item.getProfileImageUrl());
