@@ -15,6 +15,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.example.ericreese.dual.Cardss.*;
 import java.util.ArrayList;
@@ -104,12 +105,12 @@ public class SwipeCardsActivity extends AppCompatActivity {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                makeToast(SwipeCardsActivity.this, "Left!");
+                //makeToast(SwipeCardsActivity.this, "Left!");
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                makeToast(SwipeCardsActivity.this, "Right!");
+                //makeToast(SwipeCardsActivity.this, "Right!");
             }
 
             @Override
@@ -119,7 +120,7 @@ public class SwipeCardsActivity extends AppCompatActivity {
                 arrayAdapterr.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 i++;*/
-                makeToast(SwipeCardsActivity.this, "Out of people!");
+                //makeToast(SwipeCardsActivity.this, "Out of people!");
             }
 
             @Override
@@ -135,14 +136,58 @@ public class SwipeCardsActivity extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                makeToast(SwipeCardsActivity.this, "Clicked!");
+                //makeToast(SwipeCardsActivity.this, "Clicked!");
             }
         });
 
     }
 
     public void populateUsers() {
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String profileImageUrl;
+                String biography;
+                String displayname;
+                for (DataSnapshot username: dataSnapshot.getChildren()) {
+                    Object imageurl = username.child("Image").getValue();
+                    Object bio = username.child("Description").getValue();
+                    Object name = username.child("Name").getValue();
 
+                    if (imageurl != null) {
+                        profileImageUrl = imageurl.toString();
+                    } else {
+                        profileImageUrl = "";
+                    }
+                    if (bio != null) {
+                        biography = bio.toString();
+                    } else {
+                        biography = "";
+                    }
+                    if (name != null) {
+                        displayname = name.toString();
+                    } else {
+                        displayname = "";
+                    }
+                    Cards item = new Cards(dataSnapshot.getKey(), displayname, profileImageUrl);
+                    rowItems.add(item);
+                    arrayAdapterr.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     static void makeToast(Context ctx, String s){

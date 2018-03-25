@@ -8,8 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 
+
 import com.bumptech.glide.Glide;
+import com.example.ericreese.dual.FirebaseImageLoader;
+import com.example.ericreese.dual.MainActivity;
 import com.example.ericreese.dual.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -20,10 +25,14 @@ import java.util.List;
 
 public class ArrayAdapterr extends ArrayAdapter<Cards> {
 
+
     Context context;
+    private StorageReference storageReference;
+    private FirebaseStorage storage;
 
     public ArrayAdapterr(Context context, int resourceId, List<Cards> items){
         super(context, resourceId, items);
+
     }
     public View getView(int position, View convertView, ViewGroup parent){
         Cards card_item = getItem(position);
@@ -35,19 +44,22 @@ public class ArrayAdapterr extends ArrayAdapter<Cards> {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference().child("images/" + card_item.getProfileImageUrl());
+
         name.setText(card_item.getName());
-        switch(card_item.getProfileImageUrl()){
-            case "default":
-                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
-                break;
-            default:
-                Glide.clear(image);
-                Glide.with(convertView.getContext()).load(card_item.getProfileImageUrl()).into(image);
-                break;
+        Glide.clear(image);
+        if (card_item.getProfileImageUrl() == null) {
+            android.util.Log.d("TAG",card_item.getProfileImageUrl());
+            Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
+        } else {
+            Glide.with(convertView.getContext()).using(new FirebaseImageLoader()).load(storageReference).into(image);
         }
 
 
         return convertView;
 
     }
+
 }
+
