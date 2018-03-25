@@ -80,7 +80,7 @@ public class AddCategory extends AppCompatActivity {
         });
 
         this.name = (EditText) findViewById(R.id.name);
-        this.name.setText(MainActivity.name);
+        this.name.setText(MainActivity.currentCategory);
         this.bio = (EditText) findViewById(R.id.bio);
         this.bio.setText(MainActivity.bio);
         this.back = (Button) findViewById(R.id.back);

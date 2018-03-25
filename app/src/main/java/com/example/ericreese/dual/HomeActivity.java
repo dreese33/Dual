@@ -59,6 +59,33 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        MainActivity.mReference.addChildEventListener(new ChildEventListener() {
+
+            String value = "";
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    if (child.getValue().equals("Terminate")) {
+                        break;
+                    } else if (MainActivity.keys.contains(child.getKey())) {
+                        continue;
+                    }
+                    MainActivity.keys.add(child.getKey());
+                }
+            }
+
+            //Necessary methods to implement interface
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
         /*
         //Matches
         this.currentmatches.setOnClickListener(new View.OnClickListener() {

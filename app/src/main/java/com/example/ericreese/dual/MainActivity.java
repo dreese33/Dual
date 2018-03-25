@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static String name;
     public static String bio;
     public static ArrayList<String> keys = new ArrayList<String>();
+    public static String currentCategory = "";
 
     private DrawerLayout mDrawerLayout;
 
